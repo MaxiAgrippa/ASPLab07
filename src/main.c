@@ -122,6 +122,9 @@ char *readALineFrom(int fromWhat)
     // initial inputLine size
     int inputLineSize = 64;
 
+    // check -1
+    int n;
+
     // when there is next byte got read.
     while (read(fromWhat, &tmp, 1) > 0)
     {
@@ -141,6 +144,16 @@ char *readALineFrom(int fromWhat)
         // increase i to index on the next using unit.
         i++;
     }
+
+    // detect ctrl-D
+    if ((n = getchar()) == -1)
+    {
+        // print Bye Bye.
+        write(STDOUT_FILENO, "Bye Bye\n", 8);
+        freeCharMalloc(inputLine); // free inputLine
+        exit(0); // exit
+    }
+
     return inputLine;
 }
 
